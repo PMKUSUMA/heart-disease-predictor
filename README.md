@@ -22,7 +22,7 @@ A machine learning web application built with **Flask** that predicts the likeli
 12. [Technology Stack](#12-technology-stack)
 13. [PEP 8 & Code Quality](#13-pep-8--code-quality)
 14. [Team & Contributions](#14-team--contributions)
-15. [AI Tools Used](#15-ai-tools-used)
+
 
 ---
 
