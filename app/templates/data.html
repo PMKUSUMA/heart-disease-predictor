@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dataset Explorer — CardioSense</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --card: #1a2235;
+      --border: #1e2d45;
+      --accent: #e63946;
+      --accent2: #f4a261;
+      --text: #e8edf5;
+      --muted: #6b7fa3;
+      --input-bg: #0f1724;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(230,57,70,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(244,162,97,0.08) 0%, transparent 60%);
+    }
+
+    header {
+      padding: 2rem 2rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    main { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+    .page-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      min-width: 160px;
+    }
+
+    .stat-label { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-value { font-size: 1.6rem; font-weight: 600; margin-top: 0.2rem; }
+    .stat-value.accent { color: var(--accent); }
+    .stat-value.accent2 { color: var(--accent2); }
+
+    .search-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.2rem;
+      align-items: center;
+    }
+
+    .search-bar input {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.55rem 1rem;
+      font-size: 0.9rem;
+      width: 280px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-bar input:focus { border-color: var(--accent); }
+
+    .search-bar label { color: var(--muted); font-size: 0.85rem; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead tr {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+    td {
+      padding: 0.6rem 1rem;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-disease { background: rgba(230,57,70,0.15); color: #e63946; }
+    .badge-healthy { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .pagination-btns { display: flex; gap: 0.5rem; }
+
+    .btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.45rem 1rem;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn:disabled { opacity: 0.35; cursor: default; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #c1121f);
+      border: none;
+      color: white;
+      padding: 0.55rem 1.4rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">CardioSense</span>
+  <nav class="nav-links">
+    <a href="/">Predict</a>
+    <a href="/data" style="color: var(--text);">Dataset</a>
+    <a href="/api/data" target="_blank">API</a>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">Dataset Explorer</h1>
+  <p class="page-subtitle">UCI Heart Disease dataset — {{ rows|length }} patient records, 15 features</p>
+
+  {% set disease_count = rows | selectattr('target_binary', 'eq', '1') | list | length %}
+  {% set healthy_count = rows | length - disease_count %}
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Records</div>
+      <div class="stat-value">{{ rows|length }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Heart Disease</div>
+      <div class="stat-value accent">{{ disease_count }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">No Disease</div>
+      <div class="stat-value accent2">{{ healthy_count }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Features</div>
+      <div class="stat-value">{{ columns|length }}</div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <label for="searchInput">Filter rows:</label>
+    <input type="text" id="searchInput" placeholder="Type to search any value..." oninput="filterTable()"/>
+    <span id="rowCount" style="color: var(--muted); font-size:0.85rem;"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          {% for col in columns %}
+          <th>{{ col }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        {% for row in rows %}
+        <tr>
+          <td style="color: var(--muted);">{{ loop.index }}</td>
+          {% for col in columns %}
+            {% if col == 'target_binary' %}
+              <td>
+                {% if row[col] == '1' %}
+                  <span class="badge badge-disease">Disease</span>
+                {% else %}
+                  <span class="badge badge-healthy">Healthy</span>
+                {% endif %}
+              </td>
+            {% else %}
+              <td>{{ row[col] }}</td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span id="pageInfo">Showing all {{ rows|length }} rows</span>
+    <div style="display:flex; gap:0.75rem; align-items:center;">
+      <a href="/api/data" target="_blank" class="btn">View as JSON</a>
+      <a href="/" class="btn-primary">Make a Prediction</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  CardioSense — Heart Disease Predictor &nbsp;·&nbsp; UCI Heart Disease Dataset &nbsp;·&nbsp; For academic use only
+</footer>
+
+<script>
+  function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#tableBody tr');
+    let visible = 0;
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const match = text.includes(query);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    document.getElementById('rowCount').textContent = `${visible} row${visible !== 1 ? 's' : ''} shown`;
+  }
+
+  // Initialize count
+  document.getElementById('rowCount').textContent = `{{ rows|length }} rows shown`;
+</script>
+
+</body>
+</html>
