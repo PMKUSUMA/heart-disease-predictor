@@ -338,20 +338,11 @@ pytest tests/ -v
 
 | Student | GitHub | Contribution |
 |---|---|---|
-| Kusuma | PMKUSUMA | Flask app, templates, dataset, ML model, Docker, README (60%) |
-| Praveen | Praveen2541 | Test suite, code review (40%) |
+| Kusuma | PMKUSUMA | Flask app, templates, dataset, ML model, Docker, README  |
+| Praveen | Praveen2541 | Test suite, code review  |
 
 ---
 
-## 15. AI Tools Used
 
-**Tool:** Claude (Anthropic)
 
-**Prompts used:**
-1. *"Check the heart-disease-predictor project and add all missing files — requirements.txt, .gitignore, Dockerfile, docker-compose.yml. Add a dataset viewing route so users can see the full CSV data."*
-2. *"Run the Flask app and take screenshots of all pages."*
-3. *"Create a detailed README.md explanation file for the project."*
 
----
-
-*Built for Python Foundations for Data Science (k_ADSA_002) — 2026*
